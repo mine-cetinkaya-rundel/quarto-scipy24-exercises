@@ -1,0 +1,77 @@
+---
+title: Hello, Penguins!
+format: html
+date: 7/8/2024
+---
+
+# Introduction
+
+Meet the Palmer Penguins!
+
+## Packages
+
+For this analysis we'll use a few packages for visualization and data display.
+
+```{python}
+#| label: import-packages
+import great_tables as gt
+import plotnine as p9
+```
+
+## Data
+
+The dataset we'll use comes from the palmerpenguins package.
+
+```{python}
+#| label: import-load-data
+from palmerpenguins import load_penguins
+
+penguins = load_penguins()
+```
+
+This dataset contains size measurements, clutch observations, and blood isotope ratios for 344 adult foraging Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica.
+
+Let's take a peek at the data. The table below shows the first five rows of the `penguins` data frame.
+
+```{python}
+#| label: tbl-penguins-head
+#| tbl-cap: First five rows of the penguins data frame.
+(
+    gt.GT(penguins.head())
+    .fmt_number(columns = "body_mass_g", use_seps = True, decimals = 0)
+)
+```
+
+# Exploratory analysis
+
+## Body mass vs. flipper length
+
+The figure below the relationship between body mass and flipper length of penguins.
+
+```{python}
+#| label: fig-penguins-plotnine
+#| fig-cap: Body mass vs. flipper length of penguins
+#| fig-alt: Scatterplot of body mass vs. flipper length of three species of penguins (Adelie, Gentoo, and Chinstrap) with overlaid linear models for each species. There is a positive relationship between the two variables for each species. Slopes for Adelie and Chinstrap penguins are similar, and the slope for Gentoo penguins is slightly higher. Sizes of Adelie and Chinstrap penguins are also similar, while Gentoo penguins are larger in terms of body mass and flipper length compared to penguins from the other species.
+(
+    p9.ggplot(
+        penguins, 
+        p9.aes(x = "flipper_length_mm", y = "body_mass_g", color = "species")
+    )
+    + p9.geom_point()
+    + p9.stat_smooth(method = "lm")
+    + p9.scale_color_manual(
+        values = {
+            "Adelie": "#FF8C00", 
+            "Gentoo": "#159090", 
+            "Chinstrap": "#A034F0"
+        }
+    ) 
+    + p9.theme_minimal()
+    + p9.labs(
+        x = "Flipper length", 
+        y = "Body mass", 
+        color = "Species", 
+        title = "Body mass vs. flipper length of Palmer Penguins"
+    )
+)
+```
