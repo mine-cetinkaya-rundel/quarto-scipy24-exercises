@@ -1,0 +1,135 @@
+---
+title: Hello, Penguins!
+format: 
+  dashboard:
+    logo: images/penguins-logo.png
+    nav-buttons:
+      - icon: github
+        href: https://github.com/mine-cetinkaya-rundel/quarto-scipy24-exercises
+---
+
+```{python}
+#| label: import-packages
+import great_tables as gt
+import plotnine as p9
+```
+
+```{python}
+#| label: import-load-data
+from palmerpenguins import load_penguins
+
+penguins = load_penguins()
+```
+
+# Data
+
+##  {height="30%"}
+
+###  {width="50%"}
+
+A brief foray into Palmer Penguins, in dashboard form.
+
+The Palmer penguins dataset by Allison Horst, Alison Hill, and Kristen Gorman was first made publicly available as an R package. The goal of the Palmer Penguins dataset is to replace the highly overused Iris dataset for data exploration & visualization. Using this python package you can easily load the Palmer penguins into your python environment.[^1]
+
+[^1]: Source: <https://pypi.org/project/palmerpenguins/#description>
+
+###  {width="40%"}
+
+![](images/penguins.png){fig-alt="Illustration of three species of penguins: Gentoo, Chinstrap, and Adelie." width="300"}
+
+##  {height="70%"}
+
+```{python}
+#| title: First 10 penguins
+gt.GT(penguins.head(n = 10))
+```
+
+# Analysis
+
+## 
+
+```{python}
+#| title: Species
+#| warning: false
+#| fig-width: 5
+#| fig-asp: 0.618
+(
+  p9.ggplot(penguins, p9.aes(x = "species", fill = "species")) 
+  + p9.geom_bar(show_legend = False)
+  + p9.labs(x = "Species", y = "Count") 
+  + p9.theme_minimal()
+  + p9.scale_fill_manual(
+      values = {
+        "Adelie": "#FF8C00", 
+        "Gentoo": "#159090", 
+        "Chinstrap": "#A034F0"
+      }
+  )
+)
+```
+
+```{python}
+#| title: Islands
+#| warning: false
+#| fig-asp: 0.618
+(
+  p9.ggplot(penguins, p9.aes(x = "island", fill = "island")) 
+  + p9.geom_bar(show_legend = False)
+  + p9.labs(x = "Island", y = "Count") 
+  + p9.theme_minimal()
+  + p9.scale_fill_manual(
+      values = {
+        "Dream": "#58779b", 
+        "Biscoe": "#58779b75", 
+        "Torgersen": "#58779b50"
+      }
+  )
+)
+```
+
+##
+
+```{python}
+#| title: Islands and species
+#| warning: false
+#| fig-asp: 0.618
+(
+  p9.ggplot(penguins, p9.aes(x = "island", fill = "species")) 
+  + p9.geom_bar()
+  + p9.labs(y = "Count", x = "Island") 
+  + p9.theme_minimal()
+  + p9.scale_fill_manual(
+      values = {
+        "Adelie": "#FF8C00", 
+        "Gentoo": "#159090", 
+        "Chinstrap": "#A034F0"
+      }
+  )
+)
+```
+
+```{python}
+#| title: Body mass vs. flipper length
+#| fig-asp: 0.618
+(
+    p9.ggplot(
+        penguins, 
+        p9.aes(x = "flipper_length_mm", y = "body_mass_g", color = "species")
+    )
+    + p9.geom_point()
+    + p9.stat_smooth(method = "lm")
+    + p9.scale_color_manual(
+        values = {
+            "Adelie": "#FF8C00", 
+            "Gentoo": "#159090", 
+            "Chinstrap": "#A034F0"
+        }
+    ) 
+    + p9.theme_minimal()
+    + p9.labs(
+        x = "Flipper length", 
+        y = "Body mass", 
+        color = "Species", 
+    )
+)
+```
