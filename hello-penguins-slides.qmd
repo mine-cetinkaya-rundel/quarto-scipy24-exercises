@@ -1,0 +1,54 @@
+---
+title: "Hello, Penguins!"
+format: revealjs
+---
+
+## Packages
+
+For this analysis we'll use a few packages for visualization and data display.
+
+```{python}
+#| label: import-packages
+import great_tables as gt
+import plotnine as p9
+```
+
+## Data
+
+The dataset we'll use comes from the palmerpenguins package.
+
+```{python}
+#| label: import-load-data
+from palmerpenguins import load_penguins
+
+penguins = load_penguins()
+```
+
+## Penguins
+
+The table below shows the first 10 penguins from the dataset.
+
+```{python}
+#| label: penguins-top10
+gt.GT(penguins.head(n = 10))
+```
+
+# Analysis
+
+## Species
+
+The figure below is a bar plot of species of penguins.
+
+```{python}
+#| label: bill-dims-species
+#| warning: false
+#| fig-width: 5
+#| fig-asp: 0.618
+
+(
+  p9.ggplot(penguins, p9.aes(x = "species", fill = "species")) 
+  + p9.geom_bar(show_legend = None)
+  + p9.labs(x = "Species", y = "Count") 
+  + p9.theme_minimal()
+)
+```
