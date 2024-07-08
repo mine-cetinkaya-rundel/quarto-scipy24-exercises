@@ -1,5 +1,5 @@
 ---
-title: "Hello, Penguins!"
+title: Hello, Penguins!
 format: revealjs
 ---
 
@@ -47,7 +47,7 @@ The figure below is a bar plot of species of penguins.
 
 (
   p9.ggplot(penguins, p9.aes(x = "species", fill = "species")) 
-  + p9.geom_bar(show_legend = None)
+  + p9.geom_bar(show_legend = False)
   + p9.labs(x = "Species", y = "Count") 
   + p9.theme_minimal()
 )
