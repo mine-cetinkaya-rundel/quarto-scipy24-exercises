@@ -3,6 +3,8 @@ title: Hello, Penguins!
 format: revealjs
 ---
 
+# Introduction
+
 ## Packages
 
 For this analysis we'll use a few packages for visualization and data display.
@@ -43,8 +45,7 @@ The figure below is a bar plot of species of penguins.
 #| label: bill-dims-species
 #| warning: false
 #| fig-width: 5
-#| fig-asp: 0.618
-
+#| fig-asp: 0.3
 (
   p9.ggplot(penguins, p9.aes(x = "species", fill = "species")) 
   + p9.geom_bar(show_legend = False)
